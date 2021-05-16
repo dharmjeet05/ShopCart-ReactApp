@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
+
 import "./App.css";
-import { toast } from "react-toastify";
+import BuyPage from "./components/BuyPage";
+
+import { Container, Row, Col } from "reactstrap";
+import { ToastContainer, toast } from "react-toastify";
+import Cart from "./components/Cart";
 
 const App = () => {
   const [cartItem, setCartItem] = useState([]);
@@ -16,6 +21,7 @@ const App = () => {
       toast("Already added in cart", {
         type: "error",
       });
+      return;
     }
 
     setCartItem([...cartItem, item]);
@@ -29,14 +35,26 @@ const App = () => {
     });
   };
 
-  const reamoveItem = (item) => {
+  const removeItem = (item) => {
     setCartItem(cartItem.filter((singleItem) => singleItem.id !== item.id));
+
+    toast("Your Product is removed", {
+      type: "warning",
+    });
   };
 
   return (
-    <div className="App">
-      <h1>Hello</h1>
-    </div>
+    <Container fluid>
+      <ToastContainer />
+      <Row>
+        <Col md="8">
+          <BuyPage addInCart={addInCart} />
+        </Col>
+        <Col md="4">
+          <Cart cartItem={cartItem} removeItem={removeItem} buyNow={buyNow} />
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
